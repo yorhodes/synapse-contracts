@@ -1,20 +1,16 @@
 pragma solidity ^0.4.23;
 
+
 contract Proposal {
-  constructor() public {
-    owner = msg.sender;
-  }
+    uint expiration;
+    uint8 majorityThreshold;
+    uint votesFor;
+    uint votesAgainst; 
+    bytes32 fileHash;
 
-  modifier restricted() {
-    if (msg.sender == owner) _;
-  }
-
-  function setCompleted(uint completed) public restricted {
-    last_completed_migration = completed;
-  }
-
-  function upgrade(address new_address) public restricted {
-    Migrations upgraded = Migrations(new_address);
-    upgraded.setCompleted(last_completed_migration);
-  }
+    constructor(bytes32 _fileHash, uint _lifeSpan, uint8 _majorityThreshold) public {
+        fileHash = _fileHash;
+        expiration = now + _lifeSpan;
+        majorityThreshold = _majorityThreshold;
+    }
 }
